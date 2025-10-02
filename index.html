@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Isonguyo@Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: black;
+    }
+    .buttons span{
+        color: wheat;
+        font-size: 1rem;
+    }
+    .buttons span :hover{
+      color: firebrick;
+    }
+    .buttons span1{
+      color:black;
+    }
+    .calculator {
+      width: 300px;
+      background: dimgray;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+    #display {
+      width: 95%;
+      height: 60px;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+      text-align: right;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: white;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 5px;
+      justify-content: center;
+    }
+    button {
+      padding: 15px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background: wheat;
+      color: black;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: wheat;
+    }
+    .equal {
+      background: #28a745;
+      grid-column: span 2;
+    }
+    .clear {
+      background: #dc3545;
+      grid-column: span 2;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" id="display" disabled>
+    <div class="buttons">
+      <!-- Row 1 -->
+      <button class="clear" onclick="clearDisplay()">C</button>
+      <button onclick="append('(')">(</button>
+      <button onclick="append(')')">)</button>
+      <button onclick="append('%')">%</button>
+      <button onclick="append('**')">^</button>
+
+      <!-- Row 2 -->
+      <button onclick="append('7')">7</button>
+      <button onclick="append('8')">8</button>
+      <button onclick="append('9')">9</button>
+      <button onclick="append('/')">÷</button>
+      <button onclick="append('Math.sqrt(')">√</button>
+
+      <!-- Row 3 -->
+      <button onclick="append('4')">4</button>
+      <button onclick="append('5')">5</button>
+      <button onclick="append('6')">6</button>
+      <button onclick="append('*')">×</button>
+      <button onclick="append('!')">n!</button>
+
+      <!-- Row 4 -->
+      <button onclick="append('1')">1</button>
+      <button onclick="append('2')">2</button>
+      <button onclick="append('3')">3</button>
+      <button onclick="append('-')">−</button>
+      <button onclick="append('Math.sin(')">sin</button>
+
+      <!-- Row 5 -->
+      <button onclick="append('0')">0</button>
+      <button onclick="append('.')">.</button>
+      <button class="equal" onclick="calculate()">=</button>
+      <button onclick="append('+')">+</button>
+      <button onclick="append('Math.cos(')">cos</button>
+
+      <!-- Row 6 -->
+      <button onclick="append('Math.tan(')">tan</button>
+      <button onclick="append('1/Math.sin(')">csc</button>
+      <button onclick="append('1/Math.cos(')">sec</button>
+      <button onclick="append('1/Math.tan(')">cot</button>
+      <button onclick="append('Math.PI')">π</button>
+      <p><span><span1>&copy;</span1> Victor Isong<span1>uyo</span1></p>
+  
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+
+    function append(value) {
+      display.value += value;
+    }
+
+    function clearDisplay() {
+      display.value = '';
+    }
+
+    function calculate() {
+      try {
+        let expr = display.value;
+
+        // Handle factorial
+        expr = expr.replace(/(\d+)!/g, (_, n) => {
+          let f = 1;
+          for (let i = 1; i <= Number(n); i++) f *= i;
+          return f;
+        });
+
+        display.value = eval(expr);
+      } catch {
+        display.value = "Error";
+      }
+    }
+  </script>
+</body>
+</html>
