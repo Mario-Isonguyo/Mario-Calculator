@@ -1,3 +1,10 @@
+<!-- 
+  Calculator Project
+  Author: Mario-Isonguyo
+  GitHub: https://github.com/Mario-Isonguyo
+  Year: 2025
+  License: All Rights Reserved
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +22,7 @@
       background: black;
     }
     .buttons span{
-        color: wheat;
+        color: brown;
         font-size: 1rem;
     }
     .buttons span :hover{
@@ -27,7 +34,7 @@
     .calculator {
       width: 300px;
       background: dimgray;
-      padding: 20px;
+      padding: 25px;
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0,0,0,0.3);
     }
@@ -45,11 +52,11 @@
     .buttons {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 5px;
+      gap: 3px;
       justify-content: center;
     }
     button {
-      padding: 15px;
+      padding: 2px;
       font-size: 1.2rem;
       border: none;
       border-radius: 5px;
@@ -68,6 +75,18 @@
     .clear {
       background: #dc3545;
       grid-column: span 2;
+    }
+    .name {
+      grid-column: span 2;
+    }
+    #conversions {
+      margin-top: 10px;
+      font-size: 14px;
+      text-align: left;
+      white-space: pre-line;
+      background: #f1f1f1;
+      padding: 8px;
+      border-radius: 5px;
     }
   </style>
 </head>
@@ -101,14 +120,13 @@
       <button onclick="append('2')">2</button>
       <button onclick="append('3')">3</button>
       <button onclick="append('-')">−</button>
-      <button onclick="append('Math.sin(')">sin</button>
-
+  
       <!-- Row 5 -->
+      <button onclick="append('Math.cos(')">cos</button>
+      <button onclick="append('Math.sin(')">sin</button>
       <button onclick="append('0')">0</button>
       <button onclick="append('.')">.</button>
-      <button class="equal" onclick="calculate()">=</button>
       <button onclick="append('+')">+</button>
-      <button onclick="append('Math.cos(')">cos</button>
 
       <!-- Row 6 -->
       <button onclick="append('Math.tan(')">tan</button>
@@ -116,13 +134,22 @@
       <button onclick="append('1/Math.cos(')">sec</button>
       <button onclick="append('1/Math.tan(')">cot</button>
       <button onclick="append('Math.PI')">π</button>
-      <p><span><span1>&copy;</span1> Victor Isong<span1>uyo</span1></p>
-  
+
+      <!-- Mode buttons (kept for info, but conversions show automatically) -->
+      <button onclick="setMode('DEC')">DEC</button>
+      <button onclick="setMode('BIN')">BIN</button>
+      <button onclick="setMode('OCT')">OCT</button>
+      <button onclick="setMode('HEX')">HEX</button>
+
+      <div id="conversions"></div>
+
+      <button class="equal" onclick="calculate()">=</button>
+      <button class="name" onclick="append('AUTHOR')"><span><span1>&copy;</span1> Victor Isong<span1>uyo</span1></button>
     </div>
   </div>
 
   <script>
-    const display = document.getElementById('display');
+    const display = document.getElementById("display");
 
     function append(value) {
       display.value += value;
@@ -130,23 +157,45 @@
 
     function clearDisplay() {
       display.value = '';
+      document.getElementById("conversions").innerText = '';
     }
 
     function calculate() {
       try {
         let expr = display.value;
 
-        // Handle factorial
+        // Factorial handling
         expr = expr.replace(/(\d+)!/g, (_, n) => {
           let f = 1;
           for (let i = 1; i <= Number(n); i++) f *= i;
           return f;
         });
 
-        display.value = eval(expr);
+        let result = eval(expr);
+
+        // Show result
+        display.value = result;
+
+        // Show number system conversions
+        if (!isNaN(result) && Number.isFinite(result)) {
+          document.getElementById("conversions").innerText = `
+Decimal: ${result}
+Binary: ${Math.floor(result).toString(2)}
+Octal: ${Math.floor(result).toString(8)}
+Hexadecimal: ${Math.floor(result).toString(16).toUpperCase()}
+          `;
+        } else {
+          document.getElementById("conversions").innerText = "Not convertible";
+        }
+
       } catch {
         display.value = "Error";
+        document.getElementById("conversions").innerText = "";
       }
+    }
+
+    function setMode(newMode) {
+      document.getElementById("conversions").innerText = `Mode: ${newMode} (auto conversions shown below)`;
     }
   </script>
 </body>
